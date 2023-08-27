@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>View Uploads</title>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Uploaded Files and Details</h2>
+        <table class="table mt-4">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Document Type</th>
+                    <th>Document File</th>
+                    <th>Passport File</th>
+                </tr>
+            </thead>
+            <tbody id="uploadsTableBody">
+                <!-- Rows will be populated using JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Fetch the data from the server and populate the table
+        fetch('/get-uploads').then(response => response.json()).then(data => {
+            const tableBody = document.getElementById('uploadsTableBody');
+            data.forEach(row => {
+                const tr = document.createElement('tr');
+                ['name', 'email', 'phone', 'document_type', 'other_document_path', 'passport_path'].forEach(column => {
+                    const td = document.createElement('td');
+                    if (column === 'other_document_path' || column === 'passport_path') {
+                        const a = document.createElement('a');
+                        a.href = '/' + row[column];
+                        a.innerText = 'View File';
+                        td.appendChild(a);
+                    } else {
+                        td.innerText = row[column];
+                    }
+                    tr.appendChild(td);
+                });
+                tableBody.appendChild(tr);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uploaded Files</title>
+</head>
+<body>
+    <h2>Uploaded Files</h2>
+    <div id="fileList"></div>
+    <script>
+        fetch('/api/files').then(response => response.json()).then(files => {
+            const fileList = document.getElementById('fileList');
+            files.forEach(file => {
+                const fileDiv = document.createElement('div');
+                fileDiv.innerHTML = `<a href="/uploads/${file}">${file}</a> <a href="/change/${file}">(Change)</a>`;
+                fileList.appendChild(fileDiv);
+            });
+        });
+    </script>
+</body>
+</html>
